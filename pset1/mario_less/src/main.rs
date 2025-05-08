@@ -28,7 +28,10 @@ fn main() {
         }
     };
 
-    for block in (0..height) {
-        println!("{}", "#".repeat(height));
+    for i in 1..=height {
+        // From index 1 to input height
+        println!("{}{}", " ".repeat(height - i), "#".repeat(i));
+        // print spaces equal to height minus index
+        // print # equal to index
     }
 }
