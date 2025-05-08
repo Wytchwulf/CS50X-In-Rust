@@ -3,7 +3,7 @@ use std::io; // Import for stdin
 fn main() {
     println!("How tall is your tower?");
 
-    let height: u32 = loop {
+    let height: usize = loop {
         // Let height = the number that breaks the loop
         let mut input = String::new();
         io::stdin()
@@ -28,5 +28,7 @@ fn main() {
         }
     };
 
-    println!("Your tower is {} blocks tall", height);
+    for block in (0..height) {
+        println!("{}", "#".repeat(height));
+    }
 }
