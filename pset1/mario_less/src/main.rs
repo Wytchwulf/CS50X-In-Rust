@@ -14,11 +14,15 @@ fn main() {
         match input.trim().parse() {
             // Remove whitespace and convert input string to u32
             Ok(num) => {
-                break num;
-                // If convertable to u32 then break loop and return num
+                if num > 0 {
+                    break num;
+                    // If convertable to u32 and more than 0 then break loop and return num
+                } else {
+                    println!("Please enter a positive number");
+                }
             }
             Err(_) => {
-                println!("Please enter a number");
+                println!("Please enter a positive number");
                 // If unconvertable to u32 print message and continue loop
             }
         }
