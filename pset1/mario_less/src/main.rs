@@ -1,3 +1,28 @@
+use std::io; // Import for stdin
+
 fn main() {
-    println!("Hello, world!");
+    println!("How tall is your tower?");
+
+    let height: u32 = loop {
+        // Let height = the number that breaks the loop
+        let mut input = String::new();
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Could not read line");
+        // Create a mutable empty instance of a string and read user input into it.
+
+        match input.trim().parse() {
+            // Remove whitespace and convert input string to u32
+            Ok(num) => {
+                break num;
+                // If convertable to u32 then break loop and return num
+            }
+            Err(_) => {
+                println!("Please enter a number");
+                // If unconvertable to u32 print message and continue loop
+            }
+        }
+    };
+
+    println!("Your tower is {} blocks tall", height);
 }
