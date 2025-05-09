@@ -2,14 +2,24 @@ use std::io;
 
 fn main() {
     // Take input from user
-    println!("Please enter total");
-    let mut input = String::new();
-    io::stdin()
-        .read_line(&mut input)
-        .expect("Could not read line");
+    let float_val: f64 = loop {
+        println!("Please enter total");
+        let mut input = String::new();
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Could not read line");
 
-    // Convert to f64
-    let float_val: f64 = input.trim().parse().expect("Could not parse");
+        // Convert to f64
+        match input.trim().parse() {
+            Ok(num) => if num >= 0.0 {
+                break num;
+            } else {
+                println!("Please enter a positive value");
+            }
+
+            Err(_) => { println!("Please enter a valid positive number"); }
+        }
+    };
 
     // Convert to cents
     let mut cents: u32 = (float_val * 100.0).round() as u32;
