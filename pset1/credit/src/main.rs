@@ -2,6 +2,7 @@ use std::io;
 
 fn main() {
     // Take input from user
+    println!("Please enter Card no.");
     let mut input = String::new();
     io::stdin()
         .read_line(&mut input)
@@ -10,30 +11,13 @@ fn main() {
     // Sort Card Type
     let input = input.trim();
 
+    println!("Card No. : {}", &input);
+
     let card_type: &str = match input.len() {
-        13 => {
-            if &input[0..1] == "4" {
-                "VISA"
-            } else {
-                "INVALID"
-            }
-        }
-        15 => match &input[0..2] {
-            "34" => "AMEX",
-            "37" => "AMEX",
-            _ => "INVALID",
-        },
-        16 => match &input[0..1] {
-            "4" => "VISA",
-            _ => match &input[0..2] {
-                "51" => "MASTERCARD",
-                "52" => "MASTERCARD",
-                "53" => "MASTERCARD",
-                "54" => "MASTERCARD",
-                "55" => "MASTERCARD",
-                _ => "INVALID",
-            },
-        },
+        13 if input.starts_with("4") => "VISA",
+        15 if &input[0..2] == "34" || &input[0..2] == "37" => "AMEX",
+        16 if input.starts_with("4") => "VISA",
+        16 if matches!(&input[0..2], "51" | "52" | "53" | "54" | "55") => "MASTERCARD",
         _ => "INVALID",
     };
 
@@ -41,13 +25,19 @@ fn main() {
     let long_no: u64 = match input.parse() {
         Ok(num) => num,
         Err(_) => {
-            println!("Could not convert to integer");
+            println!("INVALID");
             return;
         }
     };
 
-    // TEST
-    println!("Test: {} \n{}", luhns(long_no), card_type)
+    // Validation Check
+    let valid = luhns(long_no);
+    if card_type == "INVALID" || valid % 10 != 0 {
+        println!("Invalid Card Type");
+        return;
+    } else {
+        println!("{}", card_type);
+    };
 }
 
 fn luhns(mut number: u64) -> u64 {
