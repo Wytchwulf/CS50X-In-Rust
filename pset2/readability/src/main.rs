@@ -14,7 +14,7 @@ fn main() {
     let letters: f64 = input.chars().filter(|c| c.is_alphabetic()).count() as f64;
 
     // Count Words
-    let words: f64 = input.chars().filter(|c| c.is_whitespace()).count() as f64;
+    let words: f64 = input.split_whitespace().count() as f64;
 
     // Count Sentences
     let sentence_enders = ['.', '?', '!'];
