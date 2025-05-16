@@ -10,7 +10,14 @@ fn main() {
         .read_line(&mut input)
         .expect("Could not read input");
 
-    // Analyse input
+    // Count Chars
+    let letters = input.chars().filter(|c| c.is_alphabetic()).count();
+
+    println!("input = {}letters = {}", input, letters);
+
+    // Count Words
+
+    // Count Sentences
 
     // Print result
 }
