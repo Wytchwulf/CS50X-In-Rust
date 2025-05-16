@@ -16,9 +16,11 @@ fn main() {
     // Count Words
     let words = input.chars().filter(|c| c.is_whitespace()).count();
 
-    println!("input = {}letters ={}\nwords = {}", input, letters, words)
-
     // Count Sentences
+    let sentence_enders = ['.', '?', '!'];
+    let sentences = input.chars().filter(|c| sentence_enders.contains(c)).count();
+
+    println!("input = {}letters = {}\nwords = {}\nsentences= {}", input, letters, words, sentences);
 
     // Print result
 }
