@@ -13,9 +13,10 @@ fn main() {
     // Count Chars
     let letters = input.chars().filter(|c| c.is_alphabetic()).count();
 
-    println!("input = {}letters = {}", input, letters);
-
     // Count Words
+    let words = input.chars().filter(|c| c.is_whitespace()).count();
+
+    println!("input = {}letters ={}\nwords = {}", input, letters, words)
 
     // Count Sentences
 
