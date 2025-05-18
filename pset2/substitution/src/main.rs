@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use clap::Parser;
 
 #[derive(Debug, Parser)]
@@ -10,10 +12,28 @@ struct Args {
 fn main() {
     let args = Args::parse();
 
-    if args.key.chars().count() < 26 {
-        println!("Key must be exactly 26 characters");
+    if validation(args.key) == false {
+        println!("Fuck off");
+        return;
+    } else {
+        println!("Yassssss");
         return;
     };
-
-    println!("{} chars exactly. Well done", args.key.chars().count());
 }
+
+ fn validation(key: String) -> bool {
+    let mut repeated = HashSet::new();
+
+    if key.chars().count() != 26 { return false; };
+    for char in key.chars() {
+        if !char.is_ascii_alphabetic() {
+            return false;
+        } else if repeated.contains(&char) {
+            return false;
+        } else {
+            repeated.insert(char);
+        }
+    };
+
+    true
+ }
