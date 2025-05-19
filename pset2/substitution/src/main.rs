@@ -1,6 +1,6 @@
+use clap::Parser;
 use std::collections::HashSet;
 use std::io;
-use clap::Parser;
 
 #[derive(Parser)]
 #[command(name = "Substitution", long_about = "Substitution Based Encryption")]
@@ -12,8 +12,8 @@ struct Args {
 fn main() {
     let args = Args::parse();
 
-    if validation(args.key) == false {
-        println!("Key must be:\n- 26 charaters\n- Alphabetic\n- No repeated characters");
+    if validation(&args.key) == false {
+        println!("Key must be:\n- 26 characters\n- Alphabetic\n- No repeated characters");
         return;
     };
 
@@ -25,15 +25,19 @@ fn main() {
         .read_line(&mut plaintext)
         .expect("Unable to read input");
 
+    let plaintext = plaintext.trim_end();
+    let ciphertext = encrypt(&args.key, &plaintext);
 
+    println!("Plaintext:  {}", plaintext);
+    println!("Ciphertext:  {}", ciphertext);
 }
 
-fn validation(key: String) -> bool {
+fn validation(key: &str) -> bool {
     let mut repeated = HashSet::new();
 
     if key.chars().count() != 26 {
         return false;
-    };
+    }
     for char in key.chars() {
         if !char.is_ascii_alphabetic() {
             return false;
@@ -46,6 +50,23 @@ fn validation(key: String) -> bool {
 
     true
 }
-fn encrypt(key: String, plaintext: String) -> String {
-    
+
+fn encrypt(key: &str, plaintext: &str) -> String {
+    let mut ciphertext = String::new();
+
+    for char in plaintext.chars() {
+        if char.is_ascii_uppercase() {
+            let i = char as u8 - b'A';
+            let ch = key.as_bytes()[i as usize] as char;
+            ciphertext.push(ch.to_ascii_uppercase());
+        } else if char.is_ascii_lowercase() {
+            let i = char as u8 - b'a';
+            let ch = key.as_bytes()[i as usize] as char;
+            ciphertext.push(ch.to_ascii_lowercase());
+        } else {
+            ciphertext.push(char);
+        }
+    }
+
+    ciphertext
 }
