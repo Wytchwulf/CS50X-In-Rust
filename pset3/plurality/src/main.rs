@@ -51,7 +51,7 @@ fn prompt(msg: &str) -> String {
 
 fn record_vote(candidates: &mut [Candidate], name: &str) -> bool {
     for candidate in candidates.iter_mut() {
-        if candidate.name == name {
+        if candidate.name.to_lowercase() == name.to_lowercase() {
             candidate.votes += 1;
             return true;
         }
