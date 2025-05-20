@@ -31,9 +31,13 @@ fn main() {
     let voter_count: u32 = prompt("Number of voters: ").parse().expect("Invalid Entry");
 
     for _ in 0..voter_count {
-        let name = prompt("Vote: ");
-        if !record_vote(&mut candidates, &name) {
-            println!("Invalid Vote");
+        loop {
+            let name = prompt("Vote: ");
+            if record_vote(&mut candidates, &name) {
+                break;
+            } else {
+                println!("Invalid Vote");
+            }
         }
     }
 
