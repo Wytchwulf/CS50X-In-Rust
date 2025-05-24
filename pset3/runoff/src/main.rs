@@ -38,7 +38,7 @@ fn main() {
 
     let voter_count: usize = prompt(Some("Number of voters: "))
         .parse()
-        .expect("Incorrect Input Type: u32");
+        .expect("Incorrect Input Type");
 
     if voter_count > MAX_VOTERS {
         println!("Maximum number of voters is {}", MAX_VOTERS);
@@ -80,7 +80,7 @@ fn vote(
     candidates: &[Candidate],
 ) -> bool {
     for (index, candidate) in candidates.iter().enumerate() {
-        if candidate.name.to_lowercase() == name.to_lowercase() {
+        if candidate.name.eq_ignore_ascii_case(name) {
             preferences[voter][rank] = index;
             return true;
         }
