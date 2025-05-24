@@ -22,7 +22,7 @@ fn main() {
     let candidate_count: usize = args.candidates.len();
 
     if candidate_count > MAX_CANDIDATES {
-        println!("Maximum number of cadidates is {}", MAX_CANDIDATES);
+        println!("Maximum number of candidates is {}", MAX_CANDIDATES);
         return;
     };
 
@@ -38,7 +38,7 @@ fn main() {
 
     let voter_count: usize = prompt(Some("Number of voters: "))
         .parse()
-        .expect("Incorect Input Type: u32");
+        .expect("Incorrect Input Type: u32");
 
     if voter_count > MAX_VOTERS {
         println!("Maximum number of voters is {}", MAX_VOTERS);
@@ -51,7 +51,7 @@ fn main() {
         println!("Voter {}:", i + 1);
         for j in 0..candidate_count {
             loop {
-                println!("Rank {}", j + 1);
+                println!("Rank {}: ", j + 1);
                 let name = prompt(None);
                 if vote(&name, i, j, &mut preferences, &mut candidates) {
                     break;
