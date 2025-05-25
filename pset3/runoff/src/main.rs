@@ -63,11 +63,11 @@ fn main() {
     }
 
     loop {
-        tabulate(&preference &mut candidates);
+        tabulate(&preferences, &mut candidates);
 
-        if print_winner() {
-            return
-        }
+        if print_winner(&candidates) {
+            return;
+        };
     }
 }
 
@@ -107,6 +107,14 @@ fn tabulate(preferences: &Vec<Vec<usize>>, candidates: &mut [Candidate]) {
     }
 }
 
-fn print_winner() -> bool {
+fn print_winner(candidates: &[Candidate]) -> bool {
+    let vote_total: u32 = candidates.iter().map(|c| c.votes).sum();
 
+    for candidate in candidates {
+        if candidate.votes > vote_total / 2 {
+            println!("Winner: {}", candidate.name);
+            return true;
+        }
+    }
+    false
 }
