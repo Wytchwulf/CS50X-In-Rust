@@ -61,6 +61,14 @@ fn main() {
             }
         }
     }
+
+    loop {
+        tabulate(&preference &mut candidates);
+
+        if print_winner() {
+            return
+        }
+    }
 }
 
 fn prompt(msg: Option<&str>) -> String {
@@ -86,4 +94,19 @@ fn vote(
         }
     }
     false
+}
+
+fn tabulate(preferences: &Vec<Vec<usize>>, candidates: &mut [Candidate]) {
+    for voter in preferences {
+        for &index in voter {
+            if !candidates[index].eliminated {
+                candidates[index].votes += 1;
+                break;
+            }
+        }
+    }
+}
+
+fn print_winner() -> bool {
+
 }
