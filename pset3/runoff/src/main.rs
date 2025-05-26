@@ -1,5 +1,4 @@
 use clap::Parser;
-use std::cmp::Reverse;
 use std::io::stdin;
 
 const MAX_VOTERS: usize = 100;
@@ -72,12 +71,19 @@ fn main() {
 
         let min: u32 = find_min(&candidates);
 
-        if is_tie(min) {
-            for candidate in candidate_count {
+        if is_tie(&candidates, min) {
+            for candidate in &candidates {
                 if !candidate.eliminated {
                     println!("{}", candidate.name);
                 }
             }
+            return;
+        }
+
+        eliminate(&mut candidates, min);
+
+        for candidate in &mut candidates {
+            candidate.votes = 0;
         }
     }
 }
@@ -137,4 +143,21 @@ fn find_min(candidates: &[Candidate]) -> u32 {
         .map(|c| c.votes)
         .min()
         .unwrap_or(0)
+}
+
+fn is_tie(candidates: &[Candidate], min: u32) -> bool {
+    for candidate in candidates {
+        if !candidate.eliminated && candidate.votes != min {
+            return false;
+        }
+    }
+    true
+}
+
+fn eliminate(candidates: &mut [Candidate], min: u32) {
+    for candidate in candidates {
+        if !candidate.eliminated && candidate.votes == min {
+            candidate.eliminated = true;
+        }
+    }
 }
