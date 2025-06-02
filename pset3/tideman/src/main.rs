@@ -15,29 +15,82 @@ struct Args {
     candidates: Vec<String>,
 }
 
+struct Tideman {
+    candidates: Vec<String>,
+    preferences: Vec<Vec<u32>>,
+    locked: Vec<Vec<bool>>,
+    pairs: Vec<Pair>,
+}
+
+impl Tideman {
+    fn new(candidates: Vec<String>) -> Self {
+        let count = candidates.len();
+        Self {
+            candidates,
+            preferences: vec![vec![0; count]; count],
+            locked: vec![vec![false; count]; count],
+            pairs: Vec::new(),
+        }
+    }
+
+    fn vote(&mut self, _rank: usize, _name: &str, _ranks: &mut [usize]) {
+        todo!();
+    }
+
+    fn record_preferences(&mut self, _ranks: &[usize]) {
+        todo!();
+    }
+
+    fn add_pairs(&mut self) {
+        todo!();
+    }
+
+    fn sort_pairs(&mut self) {
+        todo!();
+    }
+
+    fn lock_pairs(&mut self) {
+        todo!();
+    }
+
+    fn print_winner(&self) {
+        todo!();
+    }
+}
+
 fn main() {
     let args = Args::parse();
     let candidates: Vec<String> = args.candidates;
-    let candidate_count: usize = candidates.len();
 
-    if candidate_count > MAX_CANDIDATES {
+    if candidates.len() > MAX_CANDIDATES {
         println!("Maximum number of candidates is {}", MAX_CANDIDATES);
         return;
     }
 
-    let locked: Vec<Vec<bool>> = vec![vec![false; candidate_count]; candidate_count];
+    let mut tideman = Tideman::new(candidates);
+    let voter_count: usize = prompt("Number of voters: ").parse().expect("Invalid Entry");
 
-    let voter_count: u32 = prompt(Some("Number of voters: "))
-        .parse()
-        .expect("Invalid Entry");
+    for _ in 0..voter_count {
+        let mut ranks = vec![0; tideman.candidates.len()];
+        for (j, _) in tideman.candidates.iter().enumerate() {
+            let name = prompt(&format!("Rank {}:", j + 1));
+            if !tideman.vote(j, &name, &mut ranks) {
+                println!("Invalid Vote");
+                return;
+            }
+        }
+        tideman.record_preferences(&ranks);
+        println!();
+    }
 
-    for voter in voter_count {}
+    tideman.add_pairs();
+    tideman.sort_pairs();
+    tideman.lock_pairs();
+    tideman.print_winner();
 }
 
-fn prompt(msg: Option<&str>) -> String {
-    if let Some(value) = msg {
-        println!("{}", value);
-    }
+fn prompt(msg: &str) -> String {
+    println!("{}", msg);
     let mut input = String::new();
     stdin().read_line(&mut input).expect("Unable to read line");
     input.trim().to_string()
