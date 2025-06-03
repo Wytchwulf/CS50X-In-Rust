@@ -46,8 +46,12 @@ impl Tideman {
         }
     }
 
-    fn record_preferences(&mut self, _ranks: &[usize]) {
-        todo!();
+    fn record_preferences(&mut self, ranks: &[usize]) {
+        for i in 0..ranks.len() {
+            for j in (i + 1)..ranks.len() {
+                self.preferences[ranks[i]][ranks[j]] += 1;
+            }
+        }
     }
 
     fn add_pairs(&mut self) {
