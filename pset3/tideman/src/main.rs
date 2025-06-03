@@ -33,8 +33,17 @@ impl Tideman {
         }
     }
 
-    fn vote(&mut self, _rank: usize, _name: &str, _ranks: &mut [usize]) {
-        todo!();
+    fn vote(&mut self, rank: usize, name: &str, ranks: &mut [usize]) -> bool {
+        if let Some(index) = self
+            .candidates
+            .iter()
+            .position(|candidate| candidate == name)
+        {
+            ranks[rank] = index;
+            true
+        } else {
+            false
+        }
     }
 
     fn record_preferences(&mut self, _ranks: &[usize]) {
