@@ -57,15 +57,15 @@ impl Tideman {
     fn add_pairs(&mut self) {
         for i in 0..self.candidates.len() {
             for j in (i + 1)..self.candidates.len() {
-                let i_over_j = self.preferences[i][j] > self.preferences[j][i];
-                let j_over_i = self.preferences[j][i] > self.preferences[i][j];
+                let i_over_j = self.preferences[i][j];
+                let j_over_i = self.preferences[j][i];
 
                 if i_over_j > j_over_i {
                     self.pairs.push(Pair {
                         winner: i,
                         loser: j,
                     });
-                } else {
+                } else if j_over_i > i_over_j {
                     self.pairs.push(Pair {
                         winner: j,
                         loser: i,
@@ -86,11 +86,44 @@ impl Tideman {
     }
 
     fn lock_pairs(&mut self) {
-        todo!();
+        for pair in &self.pairs {
+            if !self.has_cycle(pair.winner, pair.loser) {
+                self.locked[pair.winner][pair.loser] = true;
+            }
+        }
+    }
+
+    fn has_cycle(&self, start: usize, current: usize) -> bool {
+        if current == start {
+            return true;
+        }
+
+        for next in 0..self.candidates.len() {
+            if self.locked[current][next] {
+                if self.has_cycle(start, next) {
+                    return true;
+                }
+            }
+        }
+
+        false
     }
 
     fn print_winner(&self) {
-        todo!();
+        for col in 0..self.candidates.len() {
+            let mut is_source = true;
+            for row in 0..self.candidates.len() {
+                if self.locked[row][col] {
+                    is_source = false;
+                    break;
+                }
+            }
+
+            if is_source {
+                println!("Winner: {}", self.candidates[col]);
+                return;
+            }
+        }
     }
 }
 
