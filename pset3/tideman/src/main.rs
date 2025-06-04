@@ -4,8 +4,8 @@ use std::io::stdin;
 const MAX_CANDIDATES: usize = 9;
 
 struct Pair {
-    winner: u32,
-    loser: u32,
+    winner: usize,
+    loser: usize,
 }
 
 #[derive(Parser)]
@@ -55,7 +55,18 @@ impl Tideman {
     }
 
     fn add_pairs(&mut self) {
-        todo!();
+        for i in 0..self.candidates.len() {
+            for j in (i + 1)..self.candidates.len() {
+                let i_over_j = self.preferences[i][j] > self.preferences[j][i];
+                let j_over_i = self.preferences[j][i] > self.preferences[i][j];
+
+                if i_over_j > j_over_i {
+                    self.pairs.push(Pair { winner: i, loser: j });
+                } else {
+                    self.pairs.push(Pair { winner: j, loser: i });
+                }
+            }
+        }
     }
 
     fn sort_pairs(&mut self) {
