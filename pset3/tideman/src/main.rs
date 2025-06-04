@@ -61,16 +61,28 @@ impl Tideman {
                 let j_over_i = self.preferences[j][i] > self.preferences[i][j];
 
                 if i_over_j > j_over_i {
-                    self.pairs.push(Pair { winner: i, loser: j });
+                    self.pairs.push(Pair {
+                        winner: i,
+                        loser: j,
+                    });
                 } else {
-                    self.pairs.push(Pair { winner: j, loser: i });
+                    self.pairs.push(Pair {
+                        winner: j,
+                        loser: i,
+                    });
                 }
             }
         }
     }
 
     fn sort_pairs(&mut self) {
-        todo!();
+        self.pairs.sort_by(|a, b| {
+            let stren_a = self.preferences[a.winner][a.loser]
+                .saturating_sub(self.preferences[a.loser][a.winner]);
+            let stren_b = self.preferences[b.winner][b.loser]
+                .saturating_sub(self.preferences[b.loser][b.winner]);
+            stren_b.cmp(&stren_a)
+        });
     }
 
     fn lock_pairs(&mut self) {
@@ -96,7 +108,7 @@ fn main() {
 
     for _ in 0..voter_count {
         let mut ranks = vec![0; tideman.candidates.len()];
-        for (j, _) in tideman.candidates.iter().enumerate() {
+        for j in 0..tideman.candidates.len() {
             let name = prompt(&format!("Rank {}:", j + 1));
             if !tideman.vote(j, &name, &mut ranks) {
                 println!("Invalid Vote");
